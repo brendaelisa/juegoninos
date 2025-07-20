@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Une y Aprende el Evangelio! 🧩⏱️</title>
+    <style>
+        /* Estilos CSS para el juego de memoria */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #e8f5e9; /* Un verde claro suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            flex-direction: column; /* Para centrar contenido verticalmente */
+            padding: 20px; /* Un poco de padding general */
+            box-sizing: border-box; /* Para que el padding no cause desbordamiento */
+        }
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 20px; /* Bordes más redondeados */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra más pronunciada */
+            padding: 40px; /* Más padding interno */
+            width: 95%; /* Ocupa más ancho */
+            max-width: 900px; /* Ancho máximo para el contenedor del juego */
+            text-align: center;
+            border: 6px solid #a5d6a7; /* Borde verde amigable y más grueso */
+            margin-bottom: 25px; /* Espacio debajo del contenedor */
+            display: flex; /* Usar flexbox para organizar los elementos internos */
+            flex-direction: column; /* Apilar los elementos verticalmente */
+            align-items: center; /* Centrar horizontalmente los elementos hijos */
+        }
+        h1 {
+            color: #388e3c; /* Verde oscuro para el título */
+            margin-bottom: 30px; /* Más espacio debajo del título */
+            font-size: 3em; /* Título más grande */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Pequeña sombra al título */
+        }
+        .timer-box {
+            font-size: 2.2em; /* Tamaño del texto del temporizador */
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 25px;
+            background-color: #dcedc8; /* Fondo para el temporizador */
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block; /* Para que el fondo se ajuste al texto */
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Más flexible, tarjetas de al menos 150px */
+            gap: 20px; /* Más espacio entre tarjetas */
+            perspective: 1000px;
+            justify-content: center; /* Centra las tarjetas en la cuadrícula */
+            width: 100%; /* Asegura que la cuadrícula ocupe el ancho disponible */
+            max-width: 650px; /* Limita el ancho de la cuadrícula para que no sea demasiado grande */
+            margin-bottom: 25px; /* Espacio debajo del tablero */
+        }
+        .card {
+            width: 150px; /* Tamaño más grande de las tarjetas */
+            height: 150px;
+            background-color: #c8e6c9; /* Color de la parte trasera de la tarjeta */
+            border-radius: 15px; /* Bordes más redondeados */
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s, opacity 0.5s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más notoria */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        .card.matched {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0);
+        }
+        .card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px; /* Bordes más redondeados */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Para que la imagen no se salga */
+        }
+        .card-front {
+            background-color: #81c784; /* Color del frente de la tarjeta (el icono) */
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 4em; /* Tamaño del emoji en el frente */
+        }
+        .card-front img { /* Para el caso de usar imágenes */
+            max-width: 90%; /* La imagen no ocupa todo el ancho */
+            max-height: 90%; /* La imagen no ocupa todo el alto */
+            object-fit: contain; /* Para que la imagen se ajuste sin cortarse */
+            border-radius: 10px; /* Bordes redondeados para la imagen */
+        }
+        .card-back {
+            background-color: #c8e6c9; /* Color de la parte trasera de la tarjeta */
+            color: #388e3c; /* Color del borde/dibujo de atrás */
+            font-size: 4em; /* Icono del dorso más grande */
+            border: 3px dashed #66bb6a; /* Borde punteado más grueso */
+        }
+
+        .message {
+            margin-top: 25px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .restart-button {
+            padding: 18px 35px; /* Botón más grande */
+            margin-top: 30px;
+            border: none;
+            border-radius: 10px; /* Bordes más redondeados */
+            background-color: #4CAF50; /* Verde vibrante para el botón */
+            color: white;
+            font-size: 1.6em; /* Texto del botón más grande */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .restart-button:hover {
+            background-color: #43A047;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        /* Contenedor para los botones de navegación */
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espacio entre los botones */
+            margin-top: 30px; /* Espacio superior para separarlos del juego principal */
+        }
+        /* Estilo para el botón de enlace entre juegos */
+        .game-link-button {
+            display: inline-block; /* Para que se comporte como un botón y acepte padding/margin */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fbc02d; /* Un color amarillo vibrante */
+            color: #333; /* Texto oscuro para contraste */
+            font-size: 1.2em;
+            text-decoration: none; /* Quitar el subrayado predeterminado de los enlaces */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .game-link-button:hover {
+            background-color: #f9a825; /* Un amarillo más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo más oscuro */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: #fff;
+            padding: 50px; /* Más padding */
+            border-radius: 20px; /* Bordes más redondeados */
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* Sombra más grande */
+            border: 6px solid #81c784;
+            animation: bounceIn 0.6s ease-out; /* Animación ligeramente más larga */
+        }
+        .popup-content h2 {
+            color: #388e3c;
+            font-size: 3.5em; /* Título del popup más grande */
+            margin-bottom: 25px;
+        }
+        .popup-content p {
+            font-size: 1.8em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; } /* Rebote más grande */
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>¡Une y Aprende el Evangelio! 🧩</h1>
+        <div class="timer-box" id="timer">Tiempo: 00:00</div>
+        <div class="board" id="game-board">
+            </div>
+        <p class="message" id="game-message">¡Encuentra los pares!</p>
+        <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
+    </div>
+
+    <div class="navigation-buttons">
+        <a href="C:\Users\Usuario\Desktop\juegos\juegoniños\escrituras.html" class="game-link-button">Ir al Juego de Escrituras</a>
+    </div>
+
+    <div class="popup" id="win-popup">
+        <div class="popup-content">
+            <h2>¡Felicidades! 🎉</h2>
+            <p id="final-time"></p>
+            <button class="restart-button" onclick="restartGame()">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica JavaScript para el juego de memoria
+        // Aquí están los emojis para el juego. Asegúrate de que cada emoji esté duplicado para formar un par.
+        const gameItems = [
+            '🙏', // Oración
+            '📖', // Escrituras
+            '⛪', // Templo
+            '💧', // Bautismo
+            '👪', // Familia Eterna
+            '☀️', // Jesucristo
+            '✨', // Espíritu Santo
+            '🎁', // Bendiciones / Dones
+            '🌞', // Sol (p. ej., la luz de Cristo)
+            '🌙', // Luna (p. ej., la guía en la oscuridad)
+            '🌴', // Nuevo emoji: Palmera (p. ej., un oasis, bendiciones)
+            '✝️', // Nuevo emoji: Cruz (p. ej., el sacrificio de Jesús)
+            // Duplica todos los emojis para los pares
+            '🙏',
+            '📖',
+            '⛪',
+            '💧',
+            '👪',
+            '☀️',
+            '✨',
+            '🎁',
+            '🌞',
+            '🌙',
+            '🌴',
+            '✝️'
+        ];
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let lockBoard = false;
+
+        let timerInterval;
+        let startTime;
+        let elapsedMilliseconds = 0;
+
+        const gameBoard = document.getElementById('game-board');
+        const gameMessage = document.getElementById('game-message');
+        const winPopup = document.getElementById('win-popup');
+        const timerDisplay = document.getElementById('timer');
+        const finalTimeDisplay = document.getElementById('final-time');
+
+        // Función para inicializar el tablero del juego
+        function initializeGame() {
+            cards = [...gameItems]; // Usar directamente el array ya duplicado
+            shuffleCards(cards); // Mezclar las tarjetas
+            gameBoard.innerHTML = ''; // Limpiar el tablero anterior
+            flippedCards = [];
+            matchedPairs = 0;
+            gameMessage.textContent = '¡Encuentra los pares!';
+            winPopup.style.display = 'none'; // Ocultar el popup de felicitación
+
+            // Resetear y iniciar el temporizador
+            clearInterval(timerInterval);
+            elapsedMilliseconds = 0;
+            updateTimerDisplay();
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000); // Actualizar cada segundo
+
+            cards.forEach((item, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.item = item; // Guardar el emoji en el dataset
+                cardElement.dataset.index = index;
+
+                cardElement.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-back">😇</div> <div class="card-front">${item}</div>
+                    </div>
+                `;
+                cardElement.addEventListener('click', flipCard);
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        // Función para mezclar las tarjetas (algoritmo Fisher-Yates)
+        function shuffleCards(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Función para voltear una tarjeta
+        function flipCard() {
+            if (lockBoard) return;
+            if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                lockBoard = true;
+                checkForMatch();
+            }
+        }
+
+        // Función para verificar si hay una coincidencia
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.item === card2.dataset.item; // Compara los emojis
+
+            if (isMatch) {
+                // Si coinciden, deshabilitarlas y hacerlas desaparecer
+                setTimeout(() => {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    card1.removeEventListener('click', flipCard); // Evita clics futuros
+                    card2.removeEventListener('click', flipCard); // Evita clics futuros
+                    matchedPairs++;
+
+                    // gameItems.length representa el número total de tarjetas (pares * 2)
+                    // Por lo tanto, el número de pares es gameItems.length / 2
+                    if (matchedPairs === (gameItems.length / 2)) {
+                        clearInterval(timerInterval); // Detener el temporizador
+                        showWinPopup();
+                    }
+                    resetBoard();
+                }, 800); // Esperar un poco para que se vea la tarjeta volteada
+            } else {
+                unflipCards();
+            }
+        }
+
+        // Función para voltear las tarjetas de nuevo si no coinciden
+        function unflipCards() {
+            setTimeout(() => {
+                flippedCards.forEach(card => {
+                    card.classList.remove('flipped');
+                });
+                resetBoard();
+            }, 1000); // Esperar 1 segundo antes de voltear de nuevo
+        }
+
+        // Función para reiniciar el estado del tablero (después de una coincidencia o no coincidencia)
+        function resetBoard() {
+            [flippedCards, lockBoard] = [[], false];
+        }
+
+        // Funciones del temporizador
+        function updateTimer() {
+            elapsedMilliseconds = Date.now() - startTime;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const totalSeconds = Math.floor(elapsedMilliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timerDisplay.textContent = `Tiempo: ${formattedTime}`;
+        }
+
+        // Función para mostrar el popup de victoria
+        function showWinPopup() {
+            const totalSeconds = Math.floor(elapsedMilliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            finalTimeDisplay.textContent = `Tu tiempo: ${String(minutes).padStart(2, '0')} minutos y ${String(seconds).padStart(2, '0')} segundos.`;
+            winPopup.style.display = 'flex';
+        }
+
+        // Función para reiniciar el juego completamente
+        function restartGame() {
+            initializeGame();
+        }
+
+        // Event listener para el botón de reiniciar (también usado por el popup)
+        document.getElementById('restart-button').addEventListener('click', restartGame);
+
+        // Inicializar el juego cuando la página se carga
+        initializeGame();
+    </script>
+</body>
+</html>
