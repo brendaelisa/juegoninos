@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -188,7 +187,7 @@
         <h1>¡Escrituras al Descubierto! 📖✨</h1>
         <div class="timer-box" id="timer">Tiempo: 00:00</div>
         <div class="board" id="game-board">
-            </div>
+        </div>
         <p class="message" id="game-message">¡Encuentra los pares de escrituras!</p>
         <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
     </div>
@@ -206,14 +205,15 @@
         // Cada elemento es una escritura corta o frase clave.
         // Asegúrate de que los textos sean iguales para que coincidan.
         const gameItems = [
-            "Ora a tu Padre",        // Oración
-            "Lee las escrituras",    // Escrituras
-            "Ama al prójimo",        // Amar al prójimo
-            "Fe en Jesucristo",      // Fe
+            "Ora a tu Padre",          // Oración
+            "Lee las escrituras",      // Escrituras
+            "Ama al prójimo",          // Amar al prójimo
+            "Fe en Jesucristo",        // Fe
             "Guardar los mandamientos", // Mandamientos
             "El Espíritu Santo te guiará", // Espíritu Santo
-            "El plan de felicidad",  // Plan de Salvación
-            "La Santa Cena",         // Santa Cena
+            "El plan de felicidad",    // Plan de Salvación
+            "La Santa Cena",           // Santa Cena
+            // Duplica todos los elementos para los pares
             "Ora a tu Padre",
             "Lee las escrituras",
             "Ama al prójimo",
@@ -241,7 +241,6 @@
 
         // Función para inicializar el tablero del juego
         function initializeGame() {
-            // No duplicar gameItems aquí, ya está duplicado en la definición
             cards = [...gameItems]; // Usar directamente el array ya duplicado
             shuffleCards(cards); // Mezclar las tarjetas
             gameBoard.innerHTML = ''; // Limpiar el tablero anterior
@@ -308,7 +307,8 @@
                     card2.removeEventListener('click', flipCard);
                     matchedPairs++;
 
-                    // gameItems.length representa el número de *pares* originales
+                    // gameItems.length representa el número de *elementos totales* (pares * 2)
+                    // Por lo tanto, el número de pares es gameItems.length / 2
                     if (matchedPairs === (gameItems.length / 2)) {
                         clearInterval(timerInterval);
                         showWinPopup();
@@ -371,378 +371,4 @@
         initializeGame();
     </script>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Escrituras al Descubierto! 📖✨</title>
-    <style>
-        /* Estilos CSS para el juego de memoria con escrituras */
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #f3e5f5; /* Un lila claro y suave */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            color: #333;
-            flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .game-container {
-            background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-            padding: 40px;
-            width: 95%;
-            max-width: 900px;
-            text-align: center;
-            border: 6px solid #ce93d8; /* Borde lila más oscuro */
-            margin-bottom: 25px;
-        }
-        h1 {
-            color: #6a1b9a; /* Púrpura oscuro para el título */
-            margin-bottom: 30px;
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .timer-box {
-            font-size: 2.2em;
-            font-weight: bold;
-            color: #4a148c; /* Púrpura más oscuro para el temporizador */
-            margin-bottom: 25px;
-            background-color: #e1bee7; /* Fondo para el temporizador */
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        .board {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Tarjetas un poco más anchas para el texto */
-            gap: 20px;
-            perspective: 1000px;
-            justify-content: center;
-        }
-        .card {
-            width: 180px; /* Tamaño de las tarjetas para texto */
-            height: 120px; /* Un poco más anchas que altas */
-            background-color: #e0bbf4; /* Color de la parte trasera de la tarjeta */
-            border-radius: 15px;
-            cursor: pointer;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s, opacity 0.5s;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px; /* Añadir padding para el texto */
-            box-sizing: border-box; /* Incluir padding en el ancho/alto */
-            text-align: center; /* Centrar texto */
-        }
-        .card.flipped {
-            transform: rotateY(180deg);
-        }
-        .card.matched {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0);
-        }
-        .card-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            padding: 10px; /* Asegurar padding también en el frente/dorso */
-            box-sizing: border-box;
-        }
-        .card-front {
-            background-color: #9c27b0; /* Púrpura vibrante para el frente */
-            color: white;
-            transform: rotateY(180deg);
-            font-size: 1.1em; /* Tamaño de fuente para las escrituras */
-            font-weight: bold;
-            line-height: 1.3; /* Espaciado entre líneas */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-        .card-back {
-            background-color: #e0bbf4; /* Color de la parte trasera de la tarjeta */
-            color: #6a1b9a;
-            font-size: 3em; /* Icono del dorso */
-            border: 3px dashed #ab47bc; /* Borde punteado lila */
-        }
-        /* Icono en el dorso (opcional, si quieres un emoji) */
-        .card-back span {
-            font-size: 3em;
-        }
-
-        .message {
-            margin-top: 25px;
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #4a148c;
-        }
-        .restart-button {
-            padding: 18px 35px;
-            margin-top: 30px;
-            border: none;
-            border-radius: 10px;
-            background-color: #ab47bc; /* Púrpura medio para el botón */
-            color: white;
-            font-size: 1.6em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-        .restart-button:hover {
-            background-color: #8e24aa;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .popup-content {
-            background-color: #fff;
-            padding: 50px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            border: 6px solid #ce93d8;
-            animation: bounceIn 0.6s ease-out;
-        }
-        .popup-content h2 {
-            color: #6a1b9a;
-            font-size: 3.5em;
-            margin-bottom: 25px;
-        }
-        .popup-content p {
-            font-size: 1.8em;
-            color: #555;
-            margin-bottom: 30px;
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            70% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-    </style>
-</head>
-<body>
-    <div class="game-container">
-        <h1>¡Escrituras al Descubierto! 📖✨</h1>
-        <div class="timer-box" id="timer">Tiempo: 00:00</div>
-        <div class="board" id="game-board">
-            </div>
-        <p class="message" id="game-message">¡Encuentra los pares de escrituras!</p>
-        <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
-    </div>
-
-    <div class="popup" id="win-popup">
-        <div class="popup-content">
-            <h2>¡Felicidades! 🎉</h2>
-            <p id="final-time"></p>
-            <button class="restart-button" onclick="restartGame()">Jugar de Nuevo</button>
-        </div>
-    </div>
-
-    <script>
-        // Lógica JavaScript para el juego de memoria con escrituras
-        // Cada elemento es una escritura corta o frase clave.
-        // Asegúrate de que los textos sean iguales para que coincidan.
-        const gameItems = [
-            "Ora a tu Padre",        // Oración
-            "Lee las escrituras",    // Escrituras
-            "Ama al prójimo",        // Amar al prójimo
-            "Fe en Jesucristo",      // Fe
-            "Guardar los mandamientos", // Mandamientos
-            "El Espíritu Santo te guiará", // Espíritu Santo
-            "El plan de felicidad",  // Plan de Salvación
-            "La Santa Cena",         // Santa Cena
-            "Ora a tu Padre",
-            "Lee las escrituras",
-            "Ama al prójimo",
-            "Fe en Jesucristo",
-            "Guardar los mandamientos",
-            "El Espíritu Santo te guiará",
-            "El plan de felicidad",
-            "La Santa Cena"
-        ];
-
-        let cards = [];
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let lockBoard = false;
-
-        let timerInterval;
-        let startTime;
-        let elapsedMilliseconds = 0;
-
-        const gameBoard = document.getElementById('game-board');
-        const gameMessage = document.getElementById('game-message');
-        const winPopup = document.getElementById('win-popup');
-        const timerDisplay = document.getElementById('timer');
-        const finalTimeDisplay = document.getElementById('final-time');
-
-        // Función para inicializar el tablero del juego
-        function initializeGame() {
-            // No duplicar gameItems aquí, ya está duplicado en la definición
-            cards = [...gameItems]; // Usar directamente el array ya duplicado
-            shuffleCards(cards); // Mezclar las tarjetas
-            gameBoard.innerHTML = ''; // Limpiar el tablero anterior
-            flippedCards = [];
-            matchedPairs = 0;
-            gameMessage.textContent = '¡Encuentra los pares de escrituras!';
-            winPopup.style.display = 'none'; // Ocultar el popup de felicitación
-
-            // Resetear y iniciar el temporizador
-            clearInterval(timerInterval);
-            elapsedMilliseconds = 0;
-            updateTimerDisplay();
-            startTime = Date.now();
-            timerInterval = setInterval(updateTimer, 1000); // Actualizar cada segundo
-
-            cards.forEach((item, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.classList.add('card');
-                cardElement.dataset.item = item; // Guardar el texto de la escritura en el dataset
-                cardElement.dataset.index = index;
-
-                cardElement.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-back"><span>📖</span></div> <div class="card-front">${item}</div>
-                    </div>
-                `;
-                cardElement.addEventListener('click', flipCard);
-                gameBoard.appendChild(cardElement);
-            });
-        }
-
-        // Función para mezclar las tarjetas (algoritmo Fisher-Yates)
-        function shuffleCards(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        // Función para voltear una tarjeta
-        function flipCard() {
-            if (lockBoard) return;
-            if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
-
-            this.classList.add('flipped');
-            flippedCards.push(this);
-
-            if (flippedCards.length === 2) {
-                lockBoard = true;
-                checkForMatch();
-            }
-        }
-
-        // Función para verificar si hay una coincidencia
-        function checkForMatch() {
-            const [card1, card2] = flippedCards;
-            const isMatch = card1.dataset.item === card2.dataset.item; // Compara los textos
-
-            if (isMatch) {
-                setTimeout(() => {
-                    card1.classList.add('matched');
-                    card2.classList.add('matched');
-                    card1.removeEventListener('click', flipCard);
-                    card2.removeEventListener('click', flipCard);
-                    matchedPairs++;
-
-                    // gameItems.length representa el número de *pares* originales
-                    if (matchedPairs === (gameItems.length / 2)) {
-                        clearInterval(timerInterval);
-                        showWinPopup();
-                    }
-                    resetBoard();
-                }, 800);
-            } else {
-                unflipCards();
-            }
-        }
-
-        // Función para voltear las tarjetas de nuevo si no coinciden
-        function unflipCards() {
-            setTimeout(() => {
-                flippedCards.forEach(card => {
-                    card.classList.remove('flipped');
-                });
-                resetBoard();
-            }, 1000);
-        }
-
-        // Función para reiniciar el estado del tablero
-        function resetBoard() {
-            [flippedCards, lockBoard] = [[], false];
-        }
-
-        // Funciones del temporizador
-        function updateTimer() {
-            elapsedMilliseconds = Date.now() - startTime;
-            updateTimerDisplay();
-        }
-
-        function updateTimerDisplay() {
-            const totalSeconds = Math.floor(elapsedMilliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-
-            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            timerDisplay.textContent = `Tiempo: ${formattedTime}`;
-        }
-
-        // Función para mostrar el popup de victoria
-        function showWinPopup() {
-            const totalSeconds = Math.floor(elapsedMilliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            finalTimeDisplay.textContent = `Tu tiempo: ${String(minutes).padStart(2, '0')} minutos y ${String(seconds).padStart(2, '0')} segundos.`;
-            winPopup.style.display = 'flex';
-        }
-
-        // Función para reiniciar el juego completamente
-        function restartGame() {
-            initializeGame();
-        }
-
-        // Event listener para el botón de reiniciar (también usado por el popup)
-        document.getElementById('restart-button').addEventListener('click', restartGame);
-
-        // Inicializar el juego cuando la página se carga
-        initializeGame();
-    </script>
-</body>
->>>>>>> a5a138b2a2367386a3474e34fa2c870e2525dbc7
 </html>
