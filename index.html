@@ -107,7 +107,7 @@
             transform: rotateY(180deg);
             font-size: 4em; /* Tamaño del emoji en el frente */
         }
-        .card-front img { /* Para el caso de usar imágenes */
+        .card-front img { /* Para el caso de usar imágenes (si decides cambiar) */
             max-width: 90%; /* La imagen no ocupa todo el ancho */
             max-height: 90%; /* La imagen no ocupa todo el alto */
             object-fit: contain; /* Para que la imagen se ajuste sin cortarse */
@@ -206,6 +206,83 @@
             70% { transform: scale(0.95); }
             100% { transform: scale(1); }
         }
+
+        /* Media Queries para hacer el juego responsivo en dispositivos móviles */
+        @media (max-width: 768px) { /* Para pantallas de tablets y móviles */
+            .game-container {
+                padding: 20px; /* Reducir el padding en pantallas pequeñas */
+                border-width: 3px; /* Borde más delgado */
+            }
+            h1 {
+                font-size: 2em; /* Título más pequeño */
+                margin-bottom: 20px;
+            }
+            .timer-box {
+                font-size: 1.5em; /* Temporizador más pequeño */
+                padding: 8px 15px;
+            }
+            .board {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Tarjetas más pequeñas en móviles */
+                gap: 10px; /* Menos espacio entre tarjetas */
+                max-width: 450px; /* Limitar el ancho del tablero en móviles */
+            }
+            .card {
+                width: 100px; /* Tamaño de tarjeta más pequeño */
+                height: 100px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .card-front, .card-back {
+                border-radius: 10px;
+            }
+            .card-front {
+                font-size: 2.5em; /* Tamaño del emoji en móviles */
+            }
+            .card-back {
+                font-size: 2.5em; /* Tamaño del emoji del dorso en móviles */
+                border-width: 2px;
+            }
+            .message {
+                font-size: 1.2em; /* Mensaje más pequeño */
+                margin-top: 20px;
+            }
+            .restart-button, .game-link-button {
+                padding: 12px 25px; /* Botones más pequeños */
+                font-size: 1em;
+                margin-top: 20px;
+            }
+            .navigation-buttons {
+                flex-direction: column; /* Apilar botones verticalmente en móviles */
+                gap: 10px;
+            }
+            .popup-content {
+                padding: 30px;
+                border-width: 3px;
+            }
+            .popup-content h2 {
+                font-size: 2.5em;
+            }
+            .popup-content p {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) { /* Ajustes para móviles muy pequeños */
+            .board {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Tarjetas aún más pequeñas */
+                max-width: 350px;
+            }
+            .card {
+                width: 80px;
+                height: 80px;
+            }
+            .card-front {
+                font-size: 2em;
+            }
+            .card-back {
+                font-size: 2em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -219,7 +296,7 @@
     </div>
 
     <div class="navigation-buttons">
-        <a href="C:\Users\Usuario\Desktop\juegos\juegoniños\escrituras.html" class="game-link-button">Ir al Juego de Escrituras</a>
+        <a href="escrituras.html" class="game-link-button">Ir al Juego de Escrituras</a>
     </div>
 
     <div class="popup" id="win-popup">
@@ -246,7 +323,7 @@
             '🌙', // Luna (p. ej., la guía en la oscuridad)
             '🌴', // Nuevo emoji: Palmera (p. ej., un oasis, bendiciones)
             '✝️', // Nuevo emoji: Cruz (p. ej., el sacrificio de Jesús)
-            // Duplica todos los emojis para los pares
+            // Duplica todos los emojis para los pares (hay 12 emojis únicos, así que 24 elementos en total)
             '🙏',
             '📖',
             '⛪',
@@ -299,11 +376,22 @@
                 cardElement.dataset.item = item; // Guardar el emoji en el dataset
                 cardElement.dataset.index = index;
 
+                // Si estás usando emojis (que es lo que parece según tu captura y conversación)
                 cardElement.innerHTML = `
                     <div class="card-inner">
                         <div class="card-back">😇</div> <div class="card-front">${item}</div>
                     </div>
                 `;
+                /*
+                // Si en algún momento decides volver a las IMÁGENES, usa este bloque en su lugar:
+                cardElement.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-back">😇</div>
+                        <div class="card-front"><img src="${item}" alt="Imagen del evangelio"></div>
+                    </div>
+                `;
+                */
+
                 cardElement.addEventListener('click', flipCard);
                 gameBoard.appendChild(cardElement);
             });
@@ -345,7 +433,7 @@
                     card2.removeEventListener('click', flipCard); // Evita clics futuros
                     matchedPairs++;
 
-                    // gameItems.length representa el número total de tarjetas (pares * 2)
+                    // gameItems.length es el total de tarjetas (pares * 2)
                     // Por lo tanto, el número de pares es gameItems.length / 2
                     if (matchedPairs === (gameItems.length / 2)) {
                         clearInterval(timerInterval); // Detener el temporizador
