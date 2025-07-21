@@ -202,42 +202,37 @@
 
     <script>
         // Lógica JavaScript para el juego de memoria con escrituras
-        // Cada elemento es una escritura corta, un concepto o una referencia de las escrituras.
-        // Asegúrate de que cada par coincida (texto/texto o texto/referencia).
+        // Cada elemento es una escritura corta o frase clave.
+        // Asegúrate de que los textos sean iguales para que coincidan.
+        // El array contiene la lista de escrituras/textos que se usarán.
         const gameItems = [
-            // Libro de Mormón
-            "2 Nefi 2:25",       // Los hombres existen para que tengan gozo
-            "Moroni 10:32",      // Venir a Cristo y ser perfeccionados en Él
-            "Alma 32:21",        // La fe no es tener un conocimiento perfecto
-            "Mosíah 2:17",       // Al estar al servicio de vuestros semejantes, solo estáis al servicio de Dios
+            // PRRIMERA MITAD: Los textos/escrituras únicos
+            "2 Nefi 2:25",
+            "Moroni 10:32",
+            "Alma 32:21",
+            "Mosíah 2:17",
+            "Juan 3:16",
+            "Filipenses 4:13",
+            "Proverbios 3:5-6",
+            "Mateo 22:37-39",
+            "DyC 18:10-11",
+            "DyC 88:118",
+            "DyC 121:45",
+            "DyC 130:22-23",
 
-            // Biblia
-            "Juan 3:16",         // Porque de tal manera amó Dios al mundo
-            "Filipenses 4:13",   // Todo lo puedo en Cristo que me fortalece
-            "Proverbios 3:5-6",  // Confía en Jehová con todo tu corazón
-            "Mateo 22:37-39",    // Amarás al Señor tu Dios... y a tu prójimo como a ti mismo
-
-            // Doctrina y Convenios
-            "DyC 18:10-11",      // El valor de las almas es grande a la vista de Dios
-            "DyC 88:118",        // Buscad conocimiento, tanto por el estudio como por la fe
-            "DyC 121:45",        // Que tus entrañas también estén llenas de caridad para con todos los hombres
-            "DyC 130:22-23",     // Padre, Hijo y Espíritu Santo tienen cuerpo y espíritu
-
-            // Los duplicados para formar los pares (asegúrate de que los valores coincidan EXACTAMENTE)
-            "Los hombres existen para que tengan gozo",
-            "Venir a Cristo y ser perfeccionados en Él",
-            "La fe no es tener un conocimiento perfecto",
-            "Al estar al servicio de vuestros semejantes, solo estáis al servicio de Dios",
-
-            "Porque de tal manera amó Dios al mundo",
-            "Todo lo puedo en Cristo que me fortalece",
-            "Confía en Jehová con todo el corazón", // Asegúrate que esta frase sea exacta a la anterior
-            "Amarás al Señor tu Dios... y a tu prójimo como a ti mismo",
-
-            "El valor de las almas es grande a la vista de Dios",
-            "Buscad conocimiento, tanto por el estudio como por la fe",
-            "Que tus entrañas también estén llenas de caridad para con todos los hombres",
-            "Padre, Hijo y Espíritu Santo tienen cuerpo y espíritu"
+            // SEGUNDA MITAD: Duplicados EXACTOS de la primera mitad para formar los pares
+            "2 Nefi 2:25",
+            "Moroni 10:32",
+            "Alma 32:21",
+            "Mosíah 2:17",
+            "Juan 3:16",
+            "Filipenses 4:13",
+            "Proverbios 3:5-6",
+            "Mateo 22:37-39",
+            "DyC 18:10-11",
+            "DyC 88:118",
+            "DyC 121:45",
+            "DyC 130:22-23"
         ];
 
         let cards = [];
