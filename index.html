@@ -126,20 +126,36 @@
             font-weight: bold;
             color: #2e7d32;
         }
-        .restart-button {
-            padding: 18px 35px; /* Botón más grande */
+        .control-buttons { /* Nuevo contenedor para los botones de control (Pausa/Reiniciar) */
+            display: flex;
+            justify-content: center;
+            gap: 20px;
             margin-top: 30px;
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+        }
+        .control-buttons button { /* Estilo base para los botones de control */
+            padding: 18px 35px; /* Botón más grande */
             border: none;
             border-radius: 10px; /* Bordes más redondeados */
-            background-color: #4CAF50; /* Verde vibrante para el botón */
             color: white;
             font-size: 1.6em; /* Texto del botón más grande */
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
+        .restart-button {
+            background-color: #4CAF50; /* Verde vibrante para el botón */
+        }
         .restart-button:hover {
             background-color: #43A047;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .pause-button { /* Estilo específico para el botón de pausa */
+            background-color: #ff9800; /* Naranja para pausa */
+        }
+        .pause-button:hover {
+            background-color: #fb8c00;
             transform: translateY(-4px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
@@ -149,6 +165,8 @@
             justify-content: center;
             gap: 20px; /* Espacio entre los botones */
             margin-top: 30px; /* Espacio superior para separarlos del juego principal */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
         }
         /* Estilo para el botón de enlace entre juegos */
         .game-link-button {
@@ -163,6 +181,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap; /* Evita que el texto del botón se rompa en varias líneas */
         }
         .game-link-button:hover {
             background-color: #f9a825; /* Un amarillo más oscuro al pasar el ratón */
@@ -209,8 +228,11 @@
 
         /* Media Queries para hacer el juego responsivo en dispositivos móviles */
         @media (max-width: 768px) { /* Para pantallas de tablets y móviles */
+            body {
+                padding: 15px; /* Un poco menos de padding general */
+            }
             .game-container {
-                padding: 20px; /* Reducir el padding en pantallas pequeñas */
+                padding: 25px; /* Reducir el padding en pantallas pequeñas */
                 border-width: 3px; /* Borde más delgado */
             }
             h1 {
@@ -222,13 +244,13 @@
                 padding: 8px 15px;
             }
             .board {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Tarjetas más pequeñas en móviles */
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Tarjetas más pequeñas en móviles */
                 gap: 10px; /* Menos espacio entre tarjetas */
-                max-width: 450px; /* Limitar el ancho del tablero en móviles */
+                max-width: 400px; /* Limitar el ancho del tablero en móviles */
             }
             .card {
-                width: 100px; /* Tamaño de tarjeta más pequeño */
-                height: 100px;
+                width: 90px; /* Tamaño de tarjeta más pequeño */
+                height: 90px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
@@ -236,24 +258,31 @@
                 border-radius: 10px;
             }
             .card-front {
-                font-size: 2.5em; /* Tamaño del emoji en móviles */
+                font-size: 2.2em; /* Tamaño del emoji en móviles */
             }
             .card-back {
-                font-size: 2.5em; /* Tamaño del emoji del dorso en móviles */
+                font-size: 2.2em; /* Tamaño del emoji del dorso en móviles */
                 border-width: 2px;
             }
             .message {
                 font-size: 1.2em; /* Mensaje más pequeño */
                 margin-top: 20px;
             }
-            .restart-button, .game-link-button {
-                padding: 12px 25px; /* Botones más pequeños */
+            .control-buttons button { /* Ajuste para botones de control en móviles */
+                padding: 12px 20px;
                 font-size: 1em;
-                margin-top: 20px;
+                margin-top: 15px; /* Ajusta este margen si se ve muy pegado */
             }
             .navigation-buttons {
                 flex-direction: column; /* Apilar botones verticalmente en móviles */
                 gap: 10px;
+            }
+            .game-link-button {
+                 padding: 12px 20px; /* Ajuste para botón de navegación en móviles */
+                 font-size: 1em;
+                 margin-top: 0; /* Ya tiene margen del contenedor */
+                 width: auto; /* Permite que el botón se ajuste a su contenido */
+                 min-width: 150px; /* Opcional: para que no sean demasiado pequeños */
             }
             .popup-content {
                 padding: 30px;
@@ -269,18 +298,22 @@
 
         @media (max-width: 480px) { /* Ajustes para móviles muy pequeños */
             .board {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Tarjetas aún más pequeñas */
-                max-width: 350px;
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Tarjetas aún más pequeñas */
+                max-width: 300px;
             }
             .card {
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
             }
             .card-front {
-                font-size: 2em;
+                font-size: 1.8em;
             }
             .card-back {
-                font-size: 2em;
+                font-size: 1.8em;
+            }
+            .control-buttons button, .game-link-button {
+                font-size: 0.9em; /* Botones de texto más pequeños */
+                padding: 10px 15px;
             }
         }
     </style>
@@ -290,9 +323,13 @@
         <h1>¡Une y Aprende el Evangelio! 🧩</h1>
         <div class="timer-box" id="timer">Tiempo: 00:00</div>
         <div class="board" id="game-board">
-        </div>
+            </div>
         <p class="message" id="game-message">¡Encuentra los pares!</p>
-        <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
+        
+        <div class="control-buttons">
+            <button class="pause-button" id="pause-button">Pausar</button>
+            <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
+        </div>
     </div>
 
     <div class="navigation-buttons">
@@ -346,12 +383,15 @@
         let timerInterval;
         let startTime;
         let elapsedMilliseconds = 0;
+        let isTimerRunning = false; // Nuevo: Estado del temporizador (corriendo o pausado)
+        let pausedTime = 0; // Nuevo: Tiempo transcurrido cuando el temporizador se pausa
 
         const gameBoard = document.getElementById('game-board');
         const gameMessage = document.getElementById('game-message');
         const winPopup = document.getElementById('win-popup');
         const timerDisplay = document.getElementById('timer');
         const finalTimeDisplay = document.getElementById('final-time');
+        const pauseButton = document.getElementById('pause-button'); // Nuevo: Referencia al botón de pausa
 
         // Función para inicializar el tablero del juego
         function initializeGame() {
@@ -366,32 +406,25 @@
             // Resetear y iniciar el temporizador
             clearInterval(timerInterval);
             elapsedMilliseconds = 0;
+            pausedTime = 0; // Resetear tiempo pausado
             updateTimerDisplay();
+            
+            isTimerRunning = true; // El temporizador empieza corriendo
             startTime = Date.now();
             timerInterval = setInterval(updateTimer, 1000); // Actualizar cada segundo
-
+            pauseButton.textContent = 'Pausar'; // Asegurarse que el botón diga "Pausar"
+            
             cards.forEach((item, index) => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
                 cardElement.dataset.item = item; // Guardar el emoji en el dataset
                 cardElement.dataset.index = index;
 
-                // Si estás usando emojis (que es lo que parece según tu captura y conversación)
                 cardElement.innerHTML = `
                     <div class="card-inner">
                         <div class="card-back">😇</div> <div class="card-front">${item}</div>
                     </div>
                 `;
-                /*
-                // Si en algún momento decides volver a las IMÁGENES, usa este bloque en su lugar:
-                cardElement.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-back">😇</div>
-                        <div class="card-front"><img src="${item}" alt="Imagen del evangelio"></div>
-                    </div>
-                `;
-                */
-
                 cardElement.addEventListener('click', flipCard);
                 gameBoard.appendChild(cardElement);
             });
@@ -407,7 +440,7 @@
 
         // Función para voltear una tarjeta
         function flipCard() {
-            if (lockBoard) return;
+            if (lockBoard || !isTimerRunning) return; // No permitir voltear si está bloqueado o el temporizador pausado
             if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
 
             this.classList.add('flipped');
@@ -425,7 +458,6 @@
             const isMatch = card1.dataset.item === card2.dataset.item; // Compara los emojis
 
             if (isMatch) {
-                // Si coinciden, deshabilitarlas y hacerlas desaparecer
                 setTimeout(() => {
                     card1.classList.add('matched');
                     card2.classList.add('matched');
@@ -433,14 +465,13 @@
                     card2.removeEventListener('click', flipCard); // Evita clics futuros
                     matchedPairs++;
 
-                    // gameItems.length es el total de tarjetas (pares * 2)
-                    // Por lo tanto, el número de pares es gameItems.length / 2
                     if (matchedPairs === (gameItems.length / 2)) {
                         clearInterval(timerInterval); // Detener el temporizador
+                        isTimerRunning = false; // El temporizador ya no está corriendo
                         showWinPopup();
                     }
                     resetBoard();
-                }, 800); // Esperar un poco para que se vea la tarjeta volteada
+                }, 800);
             } else {
                 unflipCards();
             }
@@ -453,7 +484,7 @@
                     card.classList.remove('flipped');
                 });
                 resetBoard();
-            }, 1000); // Esperar 1 segundo antes de voltear de nuevo
+            }, 1000);
         }
 
         // Función para reiniciar el estado del tablero (después de una coincidencia o no coincidencia)
@@ -463,8 +494,10 @@
 
         // Funciones del temporizador
         function updateTimer() {
-            elapsedMilliseconds = Date.now() - startTime;
-            updateTimerDisplay();
+            if (isTimerRunning) { // Solo actualizar si el temporizador está corriendo
+                elapsedMilliseconds = pausedTime + (Date.now() - startTime);
+                updateTimerDisplay();
+            }
         }
 
         function updateTimerDisplay() {
@@ -476,6 +509,27 @@
             timerDisplay.textContent = `Tiempo: ${formattedTime}`;
         }
 
+        // Nuevo: Función para pausar/reanudar el temporizador
+        function toggleTimer() {
+            if (isTimerRunning) {
+                // Pausar el temporizador
+                clearInterval(timerInterval);
+                pausedTime = elapsedMilliseconds; // Guardar el tiempo transcurrido
+                isTimerRunning = false;
+                pauseButton.textContent = 'Reanudar';
+                gameBoard.style.pointerEvents = 'none'; // Deshabilitar clics en las tarjetas
+                gameMessage.textContent = '¡Juego pausado!';
+            } else {
+                // Reanudar el temporizador
+                isTimerRunning = true;
+                startTime = Date.now(); // Reiniciar el punto de inicio para sumar al pausedTime
+                timerInterval = setInterval(updateTimer, 1000);
+                pauseButton.textContent = 'Pausar';
+                gameBoard.style.pointerEvents = 'auto'; // Habilitar clics en las tarjetas
+                gameMessage.textContent = '¡Encuentra los pares!';
+            }
+        }
+
         // Función para mostrar el popup de victoria
         function showWinPopup() {
             const totalSeconds = Math.floor(elapsedMilliseconds / 1000);
@@ -483,6 +537,7 @@
             const seconds = totalSeconds % 60;
             finalTimeDisplay.textContent = `Tu tiempo: ${String(minutes).padStart(2, '0')} minutos y ${String(seconds).padStart(2, '0')} segundos.`;
             winPopup.style.display = 'flex';
+            gameBoard.style.pointerEvents = 'none'; // Asegurarse que el tablero esté inactivo
         }
 
         // Función para reiniciar el juego completamente
@@ -492,6 +547,8 @@
 
         // Event listener para el botón de reiniciar (también usado por el popup)
         document.getElementById('restart-button').addEventListener('click', restartGame);
+        // Nuevo: Event listener para el botón de pausa
+        pauseButton.addEventListener('click', toggleTimer);
 
         // Inicializar el juego cuando la página se carga
         initializeGame();
