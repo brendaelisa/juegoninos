@@ -162,6 +162,44 @@
             transform: translateY(-4px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
+        /* Contenedor para los botones de navegación */
+        .navigation-buttons { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO */
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espacio entre los botones */
+            margin-top: 30px; /* Espacio superior para separarlos del juego principal */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
+        }
+        /* Estilo para el botón de enlace entre juegos */
+        .game-link-button { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO */
+            display: inline-block; /* Para que se comporte como un botón y acepte padding/margin */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fbc02d; /* Un color amarillo vibrante */
+            color: #333; /* Texto oscuro para contraste */
+            font-size: 1.2em;
+            text-decoration: none; /* Quitar el subrayado predeterminado de los enlaces */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap; /* Evita que el texto del botón se rompa en varias líneas */
+        }
+        .game-link-button:hover { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO */
+            background-color: #f9a825; /* Un amarillo más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        /* Color para el nuevo botón del juego de preguntas (también debe ir en este archivo) */
+        .qa-game-link-button {
+            background-color: #ba68c8; /* Un lila suave */
+            color: white; /* Texto blanco para contraste */
+        }
+        .qa-game-link-button:hover {
+            background-color: #ab47bc; /* Un lila más oscuro al pasar el ratón */
+        }
+
         .popup {
             display: none;
             position: fixed;
@@ -247,6 +285,17 @@
                 font-size: 1em;
                 margin-top: 15px; /* Ajusta este margen si se ve muy pegado */
             }
+            .navigation-buttons { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO EN ESTA MEDIA QUERY */
+                flex-direction: column; /* Apilar botones verticalmente en móviles */
+                gap: 10px;
+            }
+            .game-link-button { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO EN ESTA MEDIA QUERY */
+                padding: 12px 20px; /* Ajuste para botón de navegación en móviles */
+                font-size: 1em;
+                margin-top: 0; /* Ya tiene margen del contenedor */
+                width: auto; /* Permite que el botón se ajuste a su contenido */
+                min-width: 150px; /* Opcional: para que no sean demasiado pequeños */
+            }
             .popup-content {
                 padding: 30px;
                 border-width: 3px;
@@ -274,7 +323,7 @@
             .card-back {
                 font-size: 1.8em;
             }
-            .control-buttons button {
+            .control-buttons button, .game-link-button { /* ESTOS ESTILOS SON NUEVOS PARA ESTE ARCHIVO EN ESTA MEDIA QUERY */
                 font-size: 0.9em; /* Botones de texto más pequeños */
                 padding: 10px 15px;
             }
@@ -288,13 +337,17 @@
         <div class="board" id="game-board">
         </div>
         <p class="message" id="game-message">¡Encuentra los pares de escrituras!</p>
-        
+
         <div class="control-buttons">
             <button class="pause-button" id="pause-button">Pausar</button>
             <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
         </div>
     </div>
 
+    <div class="navigation-buttons">
+        <a href="index.html" class="game-link-button">Ir al Juego de Emojis</a>
+        <a href="preguntas_respuestas.html" class="game-link-button qa-game-link-button">Ir a Preguntas del Evangelio</a>
+    </div>
     <div class="popup" id="win-popup">
         <div class="popup-content">
             <h2>¡Felicidades! 🎉</h2>
@@ -371,7 +424,7 @@
             elapsedMilliseconds = 0;
             pausedTime = 0; // Resetear tiempo pausado
             updateTimerDisplay();
-            
+
             isTimerRunning = true; // El temporizador empieza corriendo
             startTime = Date.now();
             timerInterval = setInterval(updateTimer, 1000); // Actualizar cada segundo
@@ -478,7 +531,7 @@
             if (isTimerRunning) {
                 // Pausar el temporizador
                 clearInterval(timerInterval);
-                pausedTime = elapsedMilliseconds; // Guardar el tiempo transcurrido
+                pausedTime = elapsedMilliseconds;
                 isTimerRunning = false;
                 pauseButton.textContent = 'Reanudar';
                 gameBoard.style.pointerEvents = 'none'; // Deshabilitar clics en las tarjetas

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas y Respuestas del Evangelio 🧠💡</title>
+    <link rel="icon" type="image/png" href="juegoninos_favicon.png">
+    <style>
+        /* Estilos CSS Base (Mobile First) */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #fce4ec; /* Un rosa claro y suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            flex-direction: column;
+            padding: 15px; /* Un poco de padding general para móviles */
+            box-sizing: border-box;
+        }
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            padding: 25px; /* Padding reducido para móviles */
+            width: 98%; /* Casi todo el ancho en móviles */
+            max-width: 900px; /* Ancho máximo para el contenedor del juego en escritorio */
+            text-align: center;
+            border: 6px solid #f8bbd0;
+            margin-bottom: 20px; /* Espacio debajo del contenedor */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #ad1457;
+            margin-bottom: 20px; /* Margen reducido */
+            font-size: 2.2em; /* Título más pequeño para móviles */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .player-info-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que los jugadores se envuelvan */
+            justify-content: center;
+            gap: 8px; /* Menos espacio entre jugadores en móvil */
+            margin-bottom: 15px;
+        }
+        .player-info {
+            font-size: 1.2em; /* Tamaño de fuente para info de jugador */
+            font-weight: bold;
+            color: #880e4f;
+            background-color: #f8bbd0;
+            padding: 6px 10px; /* Padding reducido */
+            border-radius: 8px;
+            white-space: nowrap; /* Evita que el nombre del jugador se rompa */
+        }
+        .timer-box {
+            font-size: 1.8em; /* Tamaño de temporizador en móvil */
+            font-weight: bold;
+            background-color: #f48fb1;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .question-area {
+            background-color: #ffebee;
+            border: 2px solid #ef9a9a;
+            border-radius: 15px;
+            padding: 20px; /* Padding reducido */
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question-area p {
+            font-size: 1.4em; /* Tamaño de pregunta en móvil */
+            font-weight: bold;
+            color: #c2185b;
+            margin: 0;
+        }
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Una columna para móviles */
+            gap: 12px; /* Espacio reducido */
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 20px;
+        }
+        .option-button {
+            background-color: #f06292;
+            color: white;
+            padding: 12px 15px; /* Padding reducido */
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em; /* Tamaño de opciones en móvil */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .option-button:hover {
+            background-color: #ec407a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .option-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .option-button.correct {
+            background-color: #4CAF50;
+        }
+        .option-button.wrong {
+            background-color: #f44336;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Espacio reducido */
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .control-buttons button {
+            padding: 12px 25px; /* Padding de botones de control */
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2em; /* Tamaño de botones de control */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .start-button, .next-button {
+            background-color: #c2185b;
+        }
+        .start-button:hover, .next-button:hover {
+            background-color: #a31545;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .pause-button {
+            background-color: #ff9800;
+        }
+        .pause-button:hover {
+            background-color: #fb8c00;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .restart-button {
+            background-color: #f44336;
+        }
+        .restart-button:hover {
+            background-color: #d32f2f;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Espacio reducido */
+            margin-top: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .game-link-button {
+            display: inline-block;
+            padding: 12px 20px; /* Padding reducido */
+            border: none;
+            border-radius: 8px;
+            background-color: #ba68c8;
+            color: white;
+            font-size: 1em; /* Tamaño de enlace en móvil */
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+        .game-link-button:hover {
+            background-color: #ab47bc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: #fff;
+            padding: 30px; /* Padding reducido */
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border: 6px solid #f48fb1;
+            animation: bounceIn 0.6s ease-out;
+            width: 90%; /* Ancho flexible */
+            max-width: 500px; /* Máximo en pantallas grandes */
+        }
+        .popup-content h2 {
+            color: #ad1457;
+            font-size: 2.5em; /* Tamaño de título en popup */
+            margin-bottom: 20px;
+        }
+        .popup-content p {
+            font-size: 1.4em; /* Tamaño de párrafo en popup */
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .player-scores {
+            font-size: 1.2em; /* Tamaño de puntajes finales */
+            margin-top: 15px;
+            text-align: left;
+            width: 90%; /* Un poco más de ancho */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .player-scores div {
+            margin-bottom: 8px;
+            color: #880e4f;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        /* Media Queries para Tablets (ancho > 600px) */
+        @media (min-width: 600px) {
+            body {
+                padding: 20px;
+            }
+            .game-container {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 2.8em;
+                margin-bottom: 25px;
+            }
+            .player-info {
+                font-size: 1.5em;
+                padding: 8px 12px;
+            }
+            .timer-box {
+                font-size: 2em;
+                padding: 10px 20px;
+            }
+            .question-area p {
+                font-size: 1.6em;
+            }
+            .options-container {
+                grid-template-columns: repeat(2, 1fr); /* Dos columnas para opciones en tablets */
+                gap: 20px;
+            }
+            .option-button {
+                font-size: 1.3em;
+                padding: 15px 20px;
+            }
+            .control-buttons button {
+                padding: 15px 30px;
+                font-size: 1.4em;
+            }
+            .game-link-button {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+            .popup-content h2 {
+                font-size: 3em;
+            }
+            .popup-content p {
+                font-size: 1.6em;
+            }
+            .player-scores {
+                font-size: 1.3em;
+            }
+        }
+
+        /* Media Queries para Escritorio (ancho > 900px) */
+        @media (min-width: 900px) {
+            .game-container {
+                padding: 40px;
+                margin-bottom: 25px;
+            }
+            h1 {
+                font-size: 3.5em;
+                margin-bottom: 30px;
+            }
+            .player-info {
+                font-size: 1.8em;
+                padding: 10px 15px;
+            }
+            .timer-box {
+                font-size: 2.5em;
+                padding: 12px 25px;
+            }
+            .question-area {
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            .question-area p {
+                font-size: 2em;
+            }
+            .options-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+            .option-button {
+                font-size: 1.5em;
+                padding: 18px 25px;
+            }
+            .control-buttons button {
+                padding: 18px 35px;
+                font-size: 1.6em;
+            }
+            .game-link-button {
+                font-size: 1.2em;
+                padding: 15px 30px;
+            }
+            .popup-content {
+                padding: 50px;
+            }
+            .popup-content h2 {
+                font-size: 3.8em;
+            }
+            .popup-content p {
+                font-size: 1.8em;
+            }
+            .player-scores {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Preguntas y Respuestas del Evangelio 🧠💡</h1>
+        <div class="player-info-container" id="player-info-container">
+            </div>
+        <div class="timer-box" id="timer">Tiempo: 00:00</div>
+
+        <div class="question-area" id="question-area">
+            <p id="question-text">Pulsa "Iniciar Juego" para comenzar.</p>
+        </div>
+
+        <div class="options-container" id="options-container">
+            </div>
+
+        <div class="control-buttons">
+            <button class="start-button" id="start-game-button">Iniciar Juego</button>
+            <button class="pause-button" id="pause-button" style="display: none;">Pausar</button>
+            <button class="next-button" id="next-question-button" style="display: none;">Siguiente Pregunta</button>
+            <button class="restart-button" id="restart-game-button" style="display: none;">Reiniciar Juego</button>
+        </div>
+    </div>
+
+    <div class="navigation-buttons">
+        <a href="index.html" class="game-link-button">Ir al Juego de Emojis</a>
+        <a href="escrituras.html" class="game-link-button">Ir al Juego de Escrituras</a>
+    </div>
+
+    <div class="popup" id="end-game-popup">
+        <div class="popup-content">
+            <h2>¡Juego Terminado! 🎉</h2>
+            <p id="final-message"></p>
+            <div class="player-scores" id="final-scores"></div>
+            <button class="restart-button" onclick="restartGame()">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Quién fue el primer profeta de La Iglesia de Jesucristo de los Santos de los Últimos Días?",
+                options: ["Brigham Young", "José Smith", "Lorenzo Snow", "Wilford Woodruff"],
+                answer: "José Smith"
+            },
+            {
+                question: "¿Qué es el Libro de Mormón?",
+                options: ["Un diario personal de José Smith", "Un libro de historia de América", "Otro testamento de Jesucristo", "Una colección de poemas religiosos"],
+                answer: "Otro testamento de Jesucristo"
+            },
+            {
+                question: "¿Cuántos Artículos de Fe hay?",
+                options: ["10", "12", "13", "15"],
+                answer: "13"
+            },
+            {
+                question: "¿Cuál es el propósito principal del templo?",
+                options: ["Reuniones semanales", "Bautismos por los vivos", "Realizar ordenanzas sagradas", "Estudiar las escrituras"],
+                answer: "Realizar ordenanzas sagradas"
+            },
+            {
+                question: "¿Qué significa la palabra 'Evangelio'?",
+                options: ["Buenas noticias", "Historia antigua", "Libro de leyes", "Oraciones"],
+                answer: "Buenas noticias"
+            },
+            {
+                question: "¿Quién es el Salvador y Redentor del mundo?",
+                options: ["Adán", "Moisés", "Jesucristo", "Noé"],
+                answer: "Jesucristo"
+            },
+            {
+                question: "¿Qué es el Espíritu Santo?",
+                options: ["Un sentimiento", "Un miembro de la Trinidad", "Un ángel", "Una fuerza"],
+                answer: "Un miembro de la Trinidad"
+            },
+            {
+                question: "¿Qué principio nos enseña que debemos pagar el diezmo?",
+                options: ["La ley de la ofrenda", "La ley de consagración", "La ley del diezmo", "La ley del ayuno"],
+                answer: "La ley del diezmo"
+            },
+            {
+                question: "¿Qué es la Palabra de Sabiduría?",
+                options: ["Un libro de proverbios", "Una ley de salud revelada", "Un sermón de Jesús", "Un mandamiento de ayunar"],
+                answer: "Una ley de salud revelada"
+            },
+            {
+                question: "¿Qué es la Conferencia General?",
+                options: ["Una reunión de jóvenes", "Una reunión mundial de la Iglesia", "Un campamento de verano", "Una clase de seminario"],
+                answer: "Una reunión mundial de la Iglesia"
+            }
+        ];
+
+        let shuffledQuestions = [];
+        let currentQuestionIndex = 0;
+        let players = [];
+        let currentPlayerIndex = 0;
+        let numPlayers = 2; // Esta variable será actualizada por el prompt
+
+        let timerInterval;
+        let startTime;
+        let elapsedMilliseconds = 0;
+        let isTimerRunning = false;
+        let pausedTime = 0;
+        const TIME_PER_QUESTION = 15000; // 15 segundos por pregunta
+
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const timerDisplay = document.getElementById('timer');
+        const playerInfoContainer = document.getElementById('player-info-container');
+        const startGameButton = document.getElementById('start-game-button');
+        const pauseButton = document.getElementById('pause-button');
+        const nextQuestionButton = document.getElementById('next-question-button');
+        const restartGameButton = document.getElementById('restart-game-button');
+        const endGamePopup = document.getElementById('end-game-popup');
+        const finalMessageDisplay = document.getElementById('final-message');
+        const finalScoresDisplay = document.getElementById('final-scores');
+
+        function initializeGame() {
+            // Pedir número de jugadores si no está definido
+            if (players.length === 0) {
+                let input = prompt("¿Cuántos jugadores (2-6)?", "2"); // Pregunta ahora hasta 6
+                numPlayers = parseInt(input);
+                // Validación actualizada para permitir hasta 6 jugadores
+                if (isNaN(numPlayers) || numPlayers < 2 || numPlayers > 6) { 
+                    alert("Número de jugadores inválido. Se jugará con 2 jugadores por defecto.");
+                    numPlayers = 2;
+                }
+                for (let i = 0; i < numPlayers; i++) {
+                    players.push({ name: `Jugador ${i + 1}`, score: 0 });
+                }
+            } else {
+                // Reiniciar puntajes para jugadores existentes
+                players.forEach(player => player.score = 0);
+            }
+
+            shuffledQuestions = [...questions];
+            shuffleArray(shuffledQuestions);
+            currentQuestionIndex = 0;
+            currentPlayerIndex = 0;
+            updatePlayerInfoDisplay();
+
+            questionTextElement.textContent = 'Pulsa "Iniciar Juego" para comenzar.';
+            optionsContainer.innerHTML = '';
+            endGamePopup.style.display = 'none';
+
+            clearInterval(timerInterval);
+            elapsedMilliseconds = 0;
+            pausedTime = 0;
+            updateTimerDisplay();
+            isTimerRunning = false; // El temporizador no corre hasta que se inicia el juego o la pregunta
+
+            startGameButton.style.display = 'block';
+            pauseButton.style.display = 'none';
+            nextQuestionButton.style.display = 'none';
+            restartGameButton.style.display = 'none';
+            disableOptions(true); // Deshabilitar opciones al inicio
+        }
+
+        function startGame() {
+            startGameButton.style.display = 'none';
+            pauseButton.style.display = 'block';
+            restartGameButton.style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= shuffledQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            questionTextElement.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = '';
+
+            // Shuffle options for the current question
+            const shuffledOptions = [...currentQuestion.options];
+            shuffleArray(shuffledOptions);
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = option;
+                button.addEventListener('click', () => checkAnswer(button, option, currentQuestion.answer));
+                optionsContainer.appendChild(button);
+            });
+
+            disableOptions(false); // Habilitar opciones
+            startQuestionTimer();
+            updatePlayerInfoDisplay();
+        }
+
+        function startQuestionTimer() {
+            clearInterval(timerInterval);
+            elapsedMilliseconds = 0;
+            pausedTime = 0;
+            isTimerRunning = true;
+            startTime = Date.now();
+            updateTimerDisplay(); // Mostrar 00:00 al inicio
+            timerInterval = setInterval(() => {
+                if (isTimerRunning) {
+                    elapsedMilliseconds = pausedTime + (Date.now() - startTime);
+                    updateTimerDisplay();
+                    if (elapsedMilliseconds >= TIME_PER_QUESTION) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        handleTimeUp();
+                    }
+                }
+            }, 100); // Actualizar más rápido para una cuenta regresiva suave
+        }
+
+        function updateTimerDisplay() {
+            const remainingMilliseconds = Math.max(0, TIME_PER_QUESTION - elapsedMilliseconds);
+            const totalSeconds = Math.floor(remainingMilliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timerDisplay.textContent = `Tiempo: ${formattedTime}`;
+        }
+
+        function handleTimeUp() {
+            questionTextElement.textContent = `¡Tiempo agotado para el ${players[currentPlayerIndex].name}!`;
+            disableOptions(true); // Deshabilitar opciones
+            highlightCorrectAnswer(shuffledQuestions[currentQuestionIndex].answer);
+            nextQuestionButton.style.display = 'block';
+            pauseButton.style.display = 'none'; // No se puede pausar si el tiempo se agotó
+        }
+
+        function checkAnswer(selectedButton, selectedOption, correctAnswer) {
+            clearInterval(timerInterval); // Detener el temporizador al responder
+            isTimerRunning = false;
+            disableOptions(true); // Deshabilitar todas las opciones después de una selección
+
+            if (selectedOption === correctAnswer) {
+                selectedButton.classList.add('correct');
+                players[currentPlayerIndex].score++;
+                questionTextElement.textContent = `¡Correcto, ${players[currentPlayerIndex].name}!`;
+            } else {
+                selectedButton.classList.add('wrong');
+                questionTextElement.textContent = `¡Incorrecto, ${players[currentPlayerIndex].name}! La respuesta correcta era: "${correctAnswer}"`;
+                highlightCorrectAnswer(correctAnswer);
+            }
+            updatePlayerInfoDisplay();
+            nextQuestionButton.style.display = 'block';
+            pauseButton.style.display = 'none'; // No se puede pausar después de responder
+        }
+
+        function highlightCorrectAnswer(correctAnswer) {
+            Array.from(optionsContainer.children).forEach(button => {
+                if (button.textContent === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableOptions(disabled) {
+            Array.from(optionsContainer.children).forEach(button => {
+                button.disabled = disabled;
+            });
+        }
+
+        function nextQuestion() {
+            nextQuestionButton.style.display = 'none';
+            pauseButton.style.display = 'block'; // Mostrar botón de pausa de nuevo
+            currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers; // Siguiente jugador
+            currentQuestionIndex++; // Siguiente pregunta
+            loadQuestion();
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                // Pausar el temporizador
+                clearInterval(timerInterval);
+                pausedTime = elapsedMilliseconds;
+                isTimerRunning = false;
+                pauseButton.textContent = 'Reanudar';
+                disableOptions(true); // Deshabilitar opciones al pausar
+                questionTextElement.textContent = '¡Juego pausado!';
+            } else {
+                // Reanudar el temporizador
+                isTimerRunning = true;
+                startTime = Date.now(); // Reiniciar el punto de inicio para sumar al pausedTime
+                timerInterval = setInterval(() => {
+                    if (isTimerRunning) {
+                        elapsedMilliseconds = pausedTime + (Date.now() - startTime);
+                        updateTimerDisplay();
+                        if (elapsedMilliseconds >= TIME_PER_QUESTION && currentQuestionIndex < shuffledQuestions.length) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            handleTimeUp();
+                        }
+                    }
+                }, 100);
+                pauseButton.textContent = 'Pausar';
+                // Solo habilitar opciones si no se ha respondido y no se ha agotado el tiempo
+                if (elapsedMilliseconds < TIME_PER_QUESTION && currentQuestionIndex < shuffledQuestions.length) {
+                    disableOptions(false);
+                }
+                questionTextElement.textContent = shuffledQuestions[currentQuestionIndex].question;
+            }
+        }
+
+        function updatePlayerInfoDisplay() {
+            playerInfoContainer.innerHTML = '';
+            players.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.classList.add('player-info');
+                playerDiv.textContent = `${player.name}: ${player.score} puntos`;
+                if (index === currentPlayerIndex) {
+                    playerDiv.style.backgroundColor = '#ffcdd2'; // Resaltar jugador actual
+                    playerDiv.style.border = '2px solid #ad1457';
+                }
+                playerInfoContainer.appendChild(playerDiv);
+            });
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            questionTextElement.textContent = '¡Juego Terminado!';
+            optionsContainer.innerHTML = '';
+            pauseButton.style.display = 'none';
+            nextQuestionButton.style.display = 'none';
+            startGameButton.style.display = 'none';
+            restartGameButton.style.display = 'block';
+
+            let winner = players[0];
+            let tie = false;
+            for (let i = 1; i < players.length; i++) {
+                if (players[i].score > winner.score) {
+                    winner = players[i];
+                    tie = false;
+                } else if (players[i].score === winner.score) {
+                    tie = true;
+                }
+            }
+
+            if (tie) {
+                const maxScore = winner.score;
+                const tiedPlayers = players.filter(p => p.score === maxScore).map(p => p.name).join(' y ');
+                finalMessageDisplay.textContent = `¡Empate entre ${tiedPlayers} con ${maxScore} puntos!`;
+            } else {
+                finalMessageDisplay.textContent = `¡El ganador es ${winner.name} con ${winner.score} puntos!`;
+            }
+
+            finalScoresDisplay.innerHTML = '<h3>Puntajes Finales:</h3>';
+            players.forEach(player => {
+                const scoreDiv = document.createElement('div');
+                scoreDiv.textContent = `${player.name}: ${player.score} puntos`;
+                finalScoresDisplay.appendChild(scoreDiv);
+            });
+
+            endGamePopup.style.display = 'flex';
+        }
+
+        function restartGame() {
+            players = []; // Resetear jugadores para que pregunte de nuevo
+            initializeGame();
+        }
+
+        // Event Listeners
+        startGameButton.addEventListener('click', startGame);
+        pauseButton.addEventListener('click', toggleTimer);
+        nextQuestionButton.addEventListener('click', nextQuestion);
+        restartGameButton.addEventListener('click', restartGame);
+
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Initialize on page load
+        initializeGame();
+    </script>
+</body>
+</html>

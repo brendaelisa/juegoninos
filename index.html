@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Une y Aprende el Evangelio! 🧩⏱️</title>
+    <title>¡Aprende el Evangelio! 🧩⏱️</title>
     <link rel="icon" type="image/png" href="juegoninos_favicon.png">
     <style>
         /* Estilos CSS para el juego de memoria */
@@ -326,15 +326,17 @@
         <div class="board" id="game-board">
             </div>
         <p class="message" id="game-message">¡Encuentra los pares!</p>
-        
+
         <div class="control-buttons">
             <button class="pause-button" id="pause-button">Pausar</button>
             <button class="restart-button" id="restart-button">Jugar de Nuevo</button>
         </div>
     </div>
 
+   
     <div class="navigation-buttons">
         <a href="escrituras.html" class="game-link-button">Ir al Juego de Escrituras</a>
+        <a href="preguntas_respuestas.html" class="game-link-button qa-game-link-button">Ir a Preguntas del Evangelio</a>
     </div>
 
     <div class="popup" id="win-popup">
@@ -358,10 +360,7 @@
             '✨', // Espíritu Santo
             '🎁', // Bendiciones / Dones
             '🌞', // Sol (p. ej., la luz de Cristo)
-            '🌙', // Luna (p. ej., la guía en la oscuridad)
-            '🌴', // Nuevo emoji: Palmera (p. ej., un oasis, bendiciones)
-            '✝️', // Nuevo emoji: Cruz (p. ej., el sacrificio de Jesús)
-            // Duplica todos los emojis para los pares (hay 12 emojis únicos, así que 24 elementos en total)
+            // Duplica los emojis restantes para los pares (9 emojis únicos, así que 18 elementos en total)
             '🙏',
             '📖',
             '⛪',
@@ -370,10 +369,8 @@
             '☀️',
             '✨',
             '🎁',
-            '🌞',
-            '🌙',
-            '🌴',
-            '✝️'
+            '🌞'
+            // Se han eliminado 3 pares (🌙, 🌴, ✝️) y sus duplicados.
         ];
 
         let cards = [];
@@ -409,12 +406,13 @@
             elapsedMilliseconds = 0;
             pausedTime = 0; // Resetear tiempo pausado
             updateTimerDisplay();
-            
+
             isTimerRunning = true; // El temporizador empieza corriendo
             startTime = Date.now();
             timerInterval = setInterval(updateTimer, 1000); // Actualizar cada segundo
             pauseButton.textContent = 'Pausar'; // Asegurarse que el botón diga "Pausar"
-            
+            gameBoard.style.pointerEvents = 'auto'; // Asegurarse que el tablero esté activo al inicio
+
             cards.forEach((item, index) => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
